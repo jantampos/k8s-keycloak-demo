@@ -1,5 +1,5 @@
-discovery-url: http://35.247.187.36/auth/realms/demo/.well-known/openid-configuration
-client-id: demo-service
+discovery-url: http://35.247.187.36/auth/realms/demo
+client-id: service-php
 client-secret: b756bd50-8bea-47d7-9103-c66e498ff50a
 listen: 0.0.0.0:9090
 enable-logging: true
