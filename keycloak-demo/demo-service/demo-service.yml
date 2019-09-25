@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-service
+  labels:
+    name: demo-service
+    app: demo-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-service
+  template:
+    metadata:
+      name: demo-service
+      labels:
+        app: demo-service
+        name: demo-service
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: demo-service
+        image: gcr.io/k8s--projects/demo-service
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        env:
+          - name: KEYCLOAK_URL
+            value: "http://35.247.187.36:8080/auth/"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 400m
+            memory: 512Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-service
+  labels:
+    app: demo-service
+    name: demo-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  selector:
+    app: demo-service
+    name: demo-service

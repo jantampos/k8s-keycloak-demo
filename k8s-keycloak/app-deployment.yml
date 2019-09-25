@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: persons-app
+  labels:
+    name: persons-app
+    app: persons-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: persons-app
+  template:
+    metadata:
+      name: persons-app
+      labels:
+        app: persons-app
+        name: persons-app
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: keycloak
+        image: gcr.io/k8s--projects/persons-app
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: persons-app
+  labels:
+    app: persons-app
+    name: persons-app
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: persons-app
+    name: persons-app
