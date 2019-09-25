@@ -27,17 +27,8 @@ spec:
             protocol: TCP
         env:
           - name: KEYCLOAK_URL
-            value: "http://35.247.187.36:8080/auth/"
-        resources:
-          requests:
-            cpu: 200m
-            memory: 256Mi
-          limits:
-            cpu: 400m
-            memory: 512Mi
-
+            value: "http://35.247.187.36/auth"
 ---
-
 apiVersion: v1
 kind: Service
 metadata:

@@ -1,13 +1,13 @@
-discovery-url: http://192.168.64.9:30000/auth/realms/demo/.well-known/openid-configuration
+discovery-url: http://35.247.187.36/auth/realms/demo/.well-known/openid-configuration
 client-id: demo-service
-client-secret: aac340f6-1097-42c9-bc62-57ecf93e1e2e
+client-secret: b756bd50-8bea-47d7-9103-c66e498ff50a
 listen: 0.0.0.0:9090
 enable-logging: true
 enable-json-logging: true
+upstream-url: http://127.0.0.1:8080
 skip-client-id: true
 skip-openid-provider-tls-verify: true
-no-redirects: true
-upstream-url: http://127.0.0.1:8080
+no-redirects: false
 resources:
 - uri: /public
   white-listed: true
@@ -21,3 +21,14 @@ resources:
   - GET
   roles:
   - admin
+cors-origins:
+  - '*'
+  - http://35.247.187.36/*
+  - http://35.240.161.41/*
+cors-headers:
+  - authorization
+  - content-type
+cors-methods:
+  - GET
+  - POST
+  - OPTIONS

@@ -18,16 +18,16 @@ spec:
       restartPolicy: Always
       containers:
       - name: demo-service-php-app
-        image: jantampos/demo-service-php:latest
+        image: gcr.io/k8s--projects/demo-service-php
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 8080
             protocol: TCP
         env:
           - name: KEYCLOAK_URL
-            value: "http://192.168.64.9:30000/auth"
-      - name: proxy
-        image: quay.io/gambol99/keycloak-proxy:latest
+            value: "http://35.247.187.36/auth"
+      - name: service-proxy
+        image: keycloak/keycloak-gatekeeper
         imagePullPolicy: Always
         args:
           - --config=/etc/config/keycloak-gatekeeper.yml
@@ -35,7 +35,7 @@ spec:
           - containerPort: 9090
         env:
           - name: KEYCLOAK_URL
-            value: "http://192.168.64.9:30000/auth"
+            value: "http://35.247.187.36/auth"
         volumeMounts:
           - name: config-volume
             mountPath: /etc/config
@@ -44,7 +44,6 @@ spec:
         configMap:
           name: gatekeeper-config
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -53,11 +52,11 @@ metadata:
     app: demo-service-php
     name: demo-service-php
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: http
       protocol: TCP
-      port: 9090
-      nodePort: 30090
+      port: 80
+      targetPort: 9090
   selector:
     app: demo-service-php
