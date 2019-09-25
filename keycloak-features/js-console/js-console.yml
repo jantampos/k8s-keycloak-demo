@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: js-console
+  labels:
+    name: js-console
+    app: js-console
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: js-console
+  template:
+    metadata:
+      name: js-console
+      labels:
+        app: js-console
+        name: js-console
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: js-console
+        image: gcr.io/k8s--projects/keycloak-js-console
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: js-console
+  labels:
+    app: js-console
+    name: js-console
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: js-console
+    name: js-console
